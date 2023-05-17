@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./AddBank.module.scss";
 import axios from "axios";
+import { toast } from 'react-toastify'
 import { useHistory } from "react-router-dom";
 
 
@@ -104,42 +105,63 @@ const AddBank = () => {
 function submitForm(e) {
   e.preventDefault();
   const { bankName, accountNumber, phone, ownerName } = e.target;
-  // console.log(bankName.value);
-  // console.log(accountNumber.value);
-  // console.log(phone.value);
-  // console.log(ownerName.value);
-  let bankDetails = {};
-  if (
-    bankName.value === "" ||
-    accountNumber.value === "" ||
-    phone.value === "" ||
-    ownerName.value === ""
-  ) {
-    alert("All fields are required");
-    return;
-  }
-  try {
-    bankDetails = {
-      bankName: bankName.value,
-      accountNumber: parseInt(accountNumber.value),
-      phoneNumber: phone.value,
-      ownerName: ownerName.value,
-    };
-  } catch {
-    alert("error occured in account number");
-    return;
-  }
-  console.log(bankDetails);
 
-  axios
-    .post("http://localhost:5000/bankAccounts/addBankAccount", bankDetails)
-    .then((response) => {
-      console.log(response.data);
-      window.location.href = "/Payment";
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  const mobileNoRegex = /^[0][0-9]{9}$/;
+  let isValidated = true;
+  if (bankName.value === '') {
+    toast.error("Enter bank name");
+    isValidated = false;
+  }
+  if (accountNumber.value === '') {
+    toast.error("Enter account number");
+    isValidated = false;
+  }
+  if (phone.value === '') {
+    toast.error("Enter phone number");
+    isValidated = false;
+  }else if(!mobileNoRegex.test(phone.value)){
+    toast.error("Invalid phone number");
+    isValidated = false;
+  }
+  if (ownerName.value === '') {
+    toast.error("Enter owner name");
+    isValidated = false;
+  }
+
+  if(isValidated){
+    let bankDetails = {};
+    if (
+      bankName.value === "" ||
+      accountNumber.value === "" ||
+      phone.value === "" ||
+      ownerName.value === ""
+    ) {
+      alert("All fields are required");
+      return;
+    }
+    try {
+      bankDetails = {
+        bankName: bankName.value,
+        accountNumber: parseInt(accountNumber.value),
+        phoneNumber: phone.value,
+        ownerName: ownerName.value,
+      };
+    } catch {
+      alert("error occured in account number");
+      return;
+    }
+    console.log(bankDetails);
+
+    axios
+      .post("http://localhost:5000/bankAccounts/addBankAccount", bankDetails)
+      .then((response) => {
+        console.log(response.data);
+        window.location.href = "/Payment";
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 }
 
 export default AddBank;

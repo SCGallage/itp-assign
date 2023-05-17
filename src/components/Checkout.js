@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./Checkout.module.scss";
 import CheckoutTile from "../components/CheckOutItem";
 import axios from "axios";
+import { toast } from 'react-toastify'
 import { useHistory } from "react-router-dom";
 
 
@@ -63,6 +64,17 @@ const Checkout = (prop) => {
         console.log(response.data)
       }
     })
+  }
+
+  const isItemsPicked = () => {
+    let isPicked = false;
+    if( selectedList.length == 0){
+      toast.error("Pick items to checkout")
+    }
+    else{
+      isPicked = true;
+    }
+    return isPicked;
   }
 
   useEffect(() => {
@@ -144,7 +156,11 @@ const Checkout = (prop) => {
 
       {selectedItem!=-99 && itemList &&
       // <Link to={{pathname: "/MakePayment", query: {subTotal : subTotal , bonus : bonus , shipping : shipping , item : itemList[selectedItem]}}}>
-        <div onClick={() => history.push("/MakePayment", [ {subTotal, bonus, shipping, item: itemList[selectedItem]} ])} className={styles.flexWrapperTwentyt}>                  
+        <div onClick={() => {
+          if(isItemsPicked()){
+            history.push("/MakePayment", [ {subTotal, bonus, shipping, item: itemList[selectedItem]} ])
+          }
+          }} className={styles.flexWrapperTwentyt}>                  
           <div className={styles.flexWrapperOnet}>
             <p className={styles.payt}>Checkout</p>
           </div>    
@@ -153,13 +169,7 @@ const Checkout = (prop) => {
       }
         
         </div>
-
-          
-
   </div>
-
-
-
     </div>
 
         </div>       

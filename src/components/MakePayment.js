@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import styles from "./MakePayment.module.scss";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import axios from "axios";
+import { toast } from 'react-toastify'
 
 const MakePayment = () => {
   const location = useLocation()
@@ -40,7 +41,21 @@ const MakePayment = () => {
         setCardList(response.data)
       }
     })
-  }  
+  }
+
+  let pickedMethod = null;
+  const isPaymentMethodPicked = () => {
+    const methods = Array.from(document.getElementsByName("PaymentMeth"));
+    let isPicked = methods.some((method) => method.checked);
+    if(!isPicked){
+      toast.error("Pick payment method");
+    }
+    else{
+      pickedMethod = methods.find((method) => method.checked).value
+    }
+    return isPicked;
+  }
+
   return (
     <div className={styles.component14}>
       <p className={styles.itemsCartCheckout}>
@@ -92,9 +107,7 @@ const MakePayment = () => {
             </div>
 
         
-        <p className={styles.paymentMethod}>
-            Payment Method
-          </p>
+        <p className={styles.paymentMethod}>Payment Method</p>
         <div className={styles.radioGroup} >
           <radioGroup ref={paymentRef}>
           {bankList.map((bank,index)=>{
@@ -169,62 +182,56 @@ const MakePayment = () => {
 
                 <div className={styles.flexWrapperTwenty}>                  
                   <div className={styles.flexWrapperOne} style={{cursor : "pointer"}} onClick={()=>{
-                    let activated 
-                    Array.from(document.getElementsByName("PaymentMeth")).map((item,index)=>{
-                        if(item.checked)
-                        activated = item
-                    })
-                    console.log(activated)
-                    
-                    if(!isCard && slipContainer.current?.files?.length == 0){
-                      alert("Please add payment slips for bank transfers")
-                    }else{
-                      axios.post("http://localhost:5000/payment",{
-                        subtotal : subTotal,
-                        bonus : bonus,
-                        shipping : shipping,
-                        type : isCard?"card":"bank",
-                        status : isCard?"recieved":"processing",
-                        address : addressList[address].address,
-                        phone : addressList[address].phone,
-                        custName : addressList[address].name,
-                        paymentName : activated?.value
-                      }).then((responseO)=>{
-                        if(!isCard){
-                          console.log(slipContainer.current.files)
-                          console.log("Fresh")
-                          console.log(responseO)
-                          console.log("Fresh")
-                          const fd = new FormData()
-                          fd.append('image', slipContainer.current.files[0],responseO.data._id + ".jpg")
-                          
-                          axios.post("http://localhost:5000/payment/pImg",fd,{
-                            headers: {                               
-                                "Content-type" : "multipart/form-data",
-                            }}).then((response)=>{ 
-                              console.log(responseO) 
-                              sessionStorage.setItem('payment', JSON.stringify({
-                                PaymentId: responseO.data._id,
-                                CustomerName: addressList[address].name,
-                                SubTotal: subTotal
-                              }))   
-                              navigation.push("/Final")
-                          })
+                    if (isPaymentMethodPicked()){
+                      if(!isCard && slipContainer.current?.files?.length == 0){
+                        toast.error("Add payment slips for bank transfers");
+                      }else{
+                        axios.post("http://localhost:5000/payment",{
+                          subtotal : subTotal,
+                          bonus : bonus,
+                          shipping : shipping,
+                          type : isCard?"card":"bank",
+                          status : isCard?"recieved":"processing",
+                          address : addressList[address].address,
+                          phone : addressList[address].phone,
+                          custName : addressList[address].name,
+                          paymentName : pickedMethod
+                        }).then((responseO)=>{
+                          if(!isCard){
+                            console.log(slipContainer.current.files)
+                            console.log("Fresh")
+                            console.log(responseO)
+                            console.log("Fresh")
+                            const fd = new FormData()
+                            fd.append('image', slipContainer.current.files[0],responseO.data._id + ".jpg")
+                            
+                            axios.post("http://localhost:5000/payment/pImg",fd,{
+                              headers: {                               
+                                  "Content-type" : "multipart/form-data",
+                              }}).then((response)=>{ 
+                                console.log(responseO) 
+                                sessionStorage.setItem('payment', JSON.stringify({
+                                  PaymentId: responseO.data._id,
+                                  CustomerName: addressList[address].name,
+                                  SubTotal: subTotal
+                                }))   
+                                navigation.push("/Final")
+                            })
 
-                        }else{
-                          console.log(responseO)
-                          sessionStorage.setItem('payment', JSON.stringify({
-                            PaymentId: responseO.data._id,
-                            CustomerName: addressList[address].name,
-                            SubTotal: subTotal
-                          }))
-                          navigation.push("/Final", [])
+                          }else{
+                            console.log(responseO)
+                            sessionStorage.setItem('payment', JSON.stringify({
+                              PaymentId: responseO.data._id,
+                              CustomerName: addressList[address].name,
+                              SubTotal: subTotal
+                            }))
+                            navigation.push("/Final", [])
+                          }
                         }
-                      }
 
-                      )
+                        )
+                      }
                     }
-                    
                   }}>
                     <p className={styles.pay}>Pay</p>
                   </div>
@@ -256,18 +263,6 @@ const MakePayment = () => {
 
           </div>
 
-
-          
-
-        
-
-
-      
-
-
-     
-
-     
             </div>
             
       </div>
