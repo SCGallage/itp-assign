@@ -70,7 +70,7 @@ function ShippingAddForm(props){
 function handleSubmit(event,navigater){
     event.preventDefault()
     const {address, phone, name} = event.target
-    const mobileNoRegex = /[0][0-9]{9}/gi;
+    const mobileNoRegex = /^[0][0-9]{9}$/;
     let isValidated = true;
     if (name.value === '') {
       toast.error("Enter name");
