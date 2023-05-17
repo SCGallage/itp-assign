@@ -203,13 +203,13 @@ const MakePayment = () => {
                                 "Content-type" : "multipart/form-data",
                             }}).then((response)=>{ 
                               console.log(responseO)                                           
-                            navigation.push("/Final",{
-                              state :{data : responseO}
-                            })
+                            navigation.push("/Final",
+                              
+                            )
                           })
                         }else{
                           console.log(responseO)
-                          navigation.push("/Final")
+                          navigation.push("/Final", [])
                         }
                       }
 

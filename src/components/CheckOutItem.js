@@ -67,15 +67,16 @@ export default function CheckoutTile(props){
         {<input type="number"id="num1" min="1" max="20" ref={updateRef} defaultValue={qty} className={styles.count} onChange={(e)=>{
             //console.log(e.target.value)
             const data = {
-              productId : cartItem.item._id,
+              productId : cartItem.item[0]._id,
               qty : parseInt(e.target.value)
             }   
             console.log(data)
             axios.post("http://localhost:5000/cart/",data).then((response)=>{
-              refresher([])
+              //refresher([])
             }).catch((err)=>{
               
             })
+            console.log(cartItem);
            
           
         }}/>}
