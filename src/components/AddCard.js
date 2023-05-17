@@ -9,6 +9,45 @@ const AddCard = () => {
   const loadSuccess = () => history.push("/Payment");
 
 
+  function handleSubmit(event) {
+    event.preventDefault();
+    const { cardNumber, cardType, expiryDate, ownerName, cvv } = event.target;
+
+    if (
+      cardNumber.value === "" ||
+      cardType.value === "" ||
+      expiryDate.value === "" ||
+      ownerName.value === "" ||
+      cvv.value === ""
+    ) {
+      alert("All fields are required");
+
+      return;
+    }
+
+    let cardDetails = {};
+
+    cardDetails = {
+      cardNumber: cardNumber.value,
+      cardType: cardType.value,
+      expiryDate: expiryDate.value,
+      ownerName: ownerName.value,
+      cvv: cvv.value,
+    };
+
+    console.log(cardDetails);
+
+    axios
+      .post("http://localhost:5000/cards/addCard", cardDetails)
+      .then((response) => {
+        console.log(response.data);
+        history.push("/Payment");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <div className={styles.component10}>
