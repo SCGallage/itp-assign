@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./Checkout.module.scss";
 import CheckoutTile from "../components/CheckOutItem";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 
 
@@ -13,6 +13,7 @@ const Checkout = (prop) => {
   const [selectedItem , setSelected] = useState(0)
   const [itemList, setItemList] = useState()
   const [selectedList,setSelectedList] = useState([])
+  const history = useHistory();
   let total = 0;
   
   let tempTotal = 0
@@ -37,7 +38,9 @@ const Checkout = (prop) => {
     console.log(selectedList.length)
     if (selectedList.length !== 0)
       calculateSubTotal();
-  }, [selectedList])
+    else 
+      setSubtotal(0)
+  }, [selectedList, itemList])
 
   // if(itemList){
   //   axios.get("http://localhost:5000/cart/").then((response)=>{
@@ -50,17 +53,20 @@ const Checkout = (prop) => {
   // }
   if(subTotal > 30000){
     bonus = subTotal * 0.05
-    
   }
 
-  useEffect(() => {
-    axios.get("http://localhost:5000/cart/").then((response)=>{
+  const loadCheckOutItems = async () => {
+    await axios.get("http://localhost:5000/cart/").then((response)=>{
       console.log(response.data);
       if (response.data.length !== 0 ) {
         setItemList(response.data)
         console.log(response.data)
       }
     })
+  }
+
+  useEffect(() => {
+    loadCheckOutItems();
   }, [])
   return (
     <div className={styles.component13} style={{display:"flex",alignItems:"left"}}>
@@ -79,8 +85,9 @@ const Checkout = (prop) => {
                        console.log(selectedList.includes(index))   
               return <CheckoutTile key={item._id} cartItem={item} refresher={setItemList} 
                 index={index}
-                
-              selectSetter={setSelectedList} setSubTotal={setSubtotal} selected={selectedList.includes(index)} selectedList={selectedList}/>
+                calculateSubTotal={calculateSubTotal}
+                loadCheckOutItems={loadCheckOutItems}
+                selectSetter={setSelectedList} setSubTotal={setSubtotal} selected={selectedList.includes(index)} selectedList={selectedList}/>
             })           
             } 
           </div>
@@ -136,13 +143,14 @@ const Checkout = (prop) => {
         
 
       {selectedItem!=-99 && itemList &&
-      <Link to={{pathname: "/MakePayment", query: {subTotal : subTotal , bonus : bonus , shipping : shipping , item : itemList[selectedItem]}}}>
-        <div className={styles.flexWrapperTwentyt}>                  
+      // <Link to={{pathname: "/MakePayment", query: {subTotal : subTotal , bonus : bonus , shipping : shipping , item : itemList[selectedItem]}}}>
+        <div onClick={() => history.push("/MakePayment", [ {subTotal, bonus, shipping, item: itemList[selectedItem]} ])} className={styles.flexWrapperTwentyt}>                  
           <div className={styles.flexWrapperOnet}>
             <p className={styles.payt}>Checkout</p>
           </div>    
         </div>
-      </Link>}
+      // </Link>
+      }
         
         </div>
 
