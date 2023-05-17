@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./PaymentOption.module.scss";
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const PaymentOption = (props, state) => {
   const navigate = useHistory();
@@ -9,14 +10,35 @@ const PaymentOption = (props, state) => {
 
   let newList = {};
 
-  if (!wholeList.accounts) {
-    axios
-      .get("http://localhost:5000/bankAccounts/getAllBankAccounts")
+  // if (!wholeList.accounts) {
+  //   axios
+  //     .get("http://localhost:5000/bankAccounts/getAllBankAccounts")
+  //     .then((response) => {
+  //       newList.accounts = response.data;
+  //     })
+  //     .finally(() => {
+  //       if (!wholeList.cards) {
+  //         axios
+  //           .get("http://localhost:5000/cards/getAllCards")
+  //           .then((response) => {
+  //             newList.cards = response.data;
+
+  //             setList(newList);
+  //           });
+  //       }
+  //     });
+  // }
+
+  useEffect(() => {
+    loadCards();
+  }, [])
+
+  const loadCards = async () => {
+    await axios.get("http://localhost:5000/bankAccounts/getAllBankAccounts")
       .then((response) => {
         newList.accounts = response.data;
       })
       .finally(() => {
-        if (!wholeList.cards) {
           axios
             .get("http://localhost:5000/cards/getAllCards")
             .then((response) => {
@@ -24,8 +46,37 @@ const PaymentOption = (props, state) => {
 
               setList(newList);
             });
-        }
       });
+  }
+
+  const deleteCard = async (card) => {
+    let accountInfo = {
+      cardId: card._id,
+    };
+    console.log(accountInfo);
+    await axios.delete(
+        "http://localhost:5000/cards/deleteCard",
+        { data: accountInfo }
+      ).then((response) => {
+          //stateRefresh();
+          loadCards();
+          toast.success("Card deleted successfully!");
+      });
+  }
+
+  const deleteAccount = async (account) => {
+    let accountInfo = {
+      accountId: account._id,
+    };
+    console.log(accountInfo);
+    await axios.delete(
+      "http://localhost:5000/bankAccounts/deleteBankAccount",
+      { data: accountInfo }
+    )
+    .then((response) => {
+      loadCards();
+      toast.success("Account deleted successfully!");
+    });
   }
 
   return (
@@ -119,20 +170,6 @@ const PaymentOption = (props, state) => {
                               index % 2 == 1 ? "rgba(173, 164, 191, 1)" : "",
                           }}
                           className={styles.frame6Three}
-                          onClick={() => {
-                            let accountInfo = {
-                              cardId: card._id,
-                            };
-                            console.log(accountInfo);
-                            axios
-                              .delete(
-                                "http://localhost:5000/cards/deleteCard",
-                                { data: accountInfo }
-                              )
-                              .then((response) => {
-                                stateRefresh();
-                              });
-                          }}
                         >
                           <img
                             alt=""
@@ -239,20 +276,7 @@ const PaymentOption = (props, state) => {
                           ? "rgba(173, 164, 191, 1)"
                           : "",
                       }}
-                      onClick={() => {
-                        let accountInfo = {
-                          accountId: account._id,
-                        };
-                        console.log(accountInfo);
-                        axios
-                          .delete(
-                            "http://localhost:5000/bankAccounts/deleteBankAccount",
-                            { data: accountInfo }
-                          )
-                          .then((response) => {
-                            stateRefresh();
-                          });
-                      }}
+                      onClick={() => deleteAccount(account)}
                     >
                       <img
                         alt=""
