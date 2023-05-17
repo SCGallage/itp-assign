@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import axios from "axios";
 import { CheckmarkCircleOutline } from "react-ionicons";
+import QRCode from "react-qr-code";
  const bg = require('../assets/images/blurredBackground9.png')
 const PaymentFinal = (props) => {
   return (
@@ -14,10 +15,14 @@ const PaymentFinal = (props) => {
     backgroundSize: 'cover',}}>
       <Header />
       <div className={styles.component8}>
-        <CheckmarkCircleOutline
+        {/* <CheckmarkCircleOutline
           height="250px"
           width="250px"
           color={"#7CFC00"}
+        /> */}
+        <QRCode
+          style={{width: "250px", height: "250px", marginBottom: "30px"}}
+          value={sessionStorage.getItem("payment")}
         />
         <span
           color="Green"

@@ -202,13 +202,22 @@ const MakePayment = () => {
                             headers: {                               
                                 "Content-type" : "multipart/form-data",
                             }}).then((response)=>{ 
-                              console.log(responseO)                                           
-                            navigation.push("/Final",
-                              
-                            )
+                              console.log(responseO) 
+                              sessionStorage.setItem('payment', JSON.stringify({
+                                PaymentId: responseO.data._id,
+                                CustomerName: addressList[address].name,
+                                SubTotal: subTotal
+                              }))   
+                              navigation.push("/Final")
                           })
+
                         }else{
                           console.log(responseO)
+                          sessionStorage.setItem('payment', JSON.stringify({
+                            PaymentId: responseO.data._id,
+                            CustomerName: addressList[address].name,
+                            SubTotal: subTotal
+                          }))
                           navigation.push("/Final", [])
                         }
                       }
@@ -231,11 +240,11 @@ const MakePayment = () => {
                     </div>
                   </Link>
                   {!isCard && <div className={styles.flexWrapperTwo} style={{width: '312px',
-    height: '79px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',}}>
+                    height: '79px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'column',}}>
                     <p className={styles.pay}>Add Bank Slip</p>
                     <input ref={slipContainer} type="file" style={{    width: '271px', color: 'white'}} />
                   </div>}
