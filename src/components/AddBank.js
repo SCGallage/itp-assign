@@ -107,6 +107,7 @@ function submitForm(e) {
   const { bankName, accountNumber, phone, ownerName } = e.target;
 
   const mobileNoRegex = /^[0][0-9]{9}$/;
+  const numericRegex = /^\d+$/;
   let isValidated = true;
   if (bankName.value === '') {
     toast.error("Enter bank name");
@@ -114,6 +115,9 @@ function submitForm(e) {
   }
   if (accountNumber.value === '') {
     toast.error("Enter account number");
+    isValidated = false;
+  }else if(!numericRegex.test(accountNumber.value)){
+    toast.error("Invalid card number");
     isValidated = false;
   }
   if (phone.value === '') {

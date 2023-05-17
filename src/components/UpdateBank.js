@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./UpdateBank.module.scss";
 import { useLocation, useHistory } from "react-router-dom";
+import { toast } from 'react-toastify'
 import axios from "axios";
 
 const UpdateBank = (props) => {
@@ -117,45 +118,54 @@ function handleUpdate(navigater, event) {
   event.preventDefault();
   const { accountId, bankName, accountNumber, phoneNumber, ownerName } =
     event.target;
-  // console.log(event.target.accountNumber.value);
-
-  // console.log("accountId:", accountId.value);
-  // console.log("bankName:", bankName.value);
-  // console.log("accountNumber:", parseInt(accountNumber.value));
-  // console.log("phoneNumber:", phoneNumber.value);
-  // console.log("ownerName:", ownerName.value);
-
-  let bankDetails = {};
-  if (
-    !accountId.value.trim() ||
-    !bankName.value.trim() ||
-    !accountNumber.value.trim() ||
-    !phoneNumber.value.trim() ||
-    !ownerName.value.trim()
-  ) {
-    alert("All fields are required");
-    return;
+  
+  const mobileNoRegex = /^[0][0-9]{9}$/;
+  const numericRegex = /^\d+$/;
+  let isValidated = true;
+  if (bankName.value === '') {
+    toast.error("Enter bank name");
+    isValidated = false;
+  }
+  if (accountNumber.value === '') {
+    toast.error("Enter account number");
+    isValidated = false;
+  }else if(!numericRegex.test(accountNumber.value)){
+    toast.error("Invalid card number");
+    isValidated = false;
+  }
+  if (phoneNumber.value === '') {
+    toast.error("Enter phone number");
+    isValidated = false;
+  }else if(!mobileNoRegex.test(phoneNumber.value)){
+    toast.error("Invalid phone number");
+    isValidated = false;
+  }
+  if (ownerName.value === '') {
+    toast.error("Enter owner name");
+    isValidated = false;
   }
 
-
-  try {
-    bankDetails = {
-      accountId: accountId.value,
-      bankName: bankName.value,
-      accountNumber: parseInt(accountNumber.value),
-      phoneNumber: phoneNumber.value,
-      ownerName: ownerName.value,
-    };
-  } catch (e) {
-    alert(e);
-    console.error(e);
-    return;
+  if(isValidated){
+    let bankDetails = {};
+    try {
+      bankDetails = {
+        accountId: accountId.value,
+        bankName: bankName.value,
+        accountNumber: parseInt(accountNumber.value),
+        phoneNumber: phoneNumber.value,
+        ownerName: ownerName.value,
+      };
+    } catch (e) {
+      alert(e);
+      console.error(e);
+      return;
+    }
+    axios
+      .put("http://localhost:5000/bankAccounts/updateBankAccount", bankDetails)
+      .then((response) => {
+        navigater();
+      });
   }
-  axios
-    .put("http://localhost:5000/bankAccounts/updateBankAccount", bankDetails)
-    .then((response) => {
-      navigater();
-    });
 }
 
 export default UpdateBank;

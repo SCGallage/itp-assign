@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./PaymentUpdate.module.scss";
 import { useLocation, useHistory } from "react-router-dom";
+import { toast } from 'react-toastify'
 import axios from "axios";
 
 const PaymentUpdate = () => {
@@ -129,30 +130,59 @@ const PaymentUpdate = () => {
 };
 function handleUpdate(event, navigater) {
   event.preventDefault();
+  
   const { cardNumber, cardType, expiryDate, ownerName, cvv, cardId } =
     event.target;
 
-  let cardDetails = {};
+  const cvvRegex = /^[0-9]{3,4}$/;
+  const numericRegex = /^\d+$/;
+  let isValidated = true;
+  if (cardNumber.value === '') {
+    toast.error("Enter card number");
+    isValidated = false;
+  }else if(!numericRegex.test(cardNumber.value)){
+    toast.error("Invalid card number");
+    isValidated = false;
+  }
+  if (expiryDate.value === '') {
+    toast.error("Pick expiry date");
+    isValidated = false;
+  }
+  if (ownerName.value === '') {
+    toast.error("Enter owner name");
+    isValidated = false;
+  }
+  if (cvv.value === '') {
+    toast.error("Enter CVV number");
+    isValidated = false;
+  }else if(!cvvRegex.test(cvv.value)){
+    toast.error("Invalid CVV");
+    isValidated = false;
+  }
 
-  cardDetails = {
-    cardId: cardId.value,
-    cardNumber: cardNumber.value,
-    cardType: cardType.value,
-    expiryDate: new Date(expiryDate.value).toISOString().substring(0, 10),
-    ownerName: ownerName.value,
-    cvv: cvv.value,
-  };
+  if (isValidated) {
+    let cardDetails = {};
 
-  console.log(cardDetails);
+    cardDetails = {
+      cardId: cardId.value,
+      cardNumber: cardNumber.value,
+      cardType: cardType.value,
+      expiryDate: new Date(expiryDate.value).toISOString().substring(0, 10),
+      ownerName: ownerName.value,
+      cvv: cvv.value,
+    };
 
-  axios
-    .put("http://localhost:5000/cards/updateCard", cardDetails)
-    .then((response) => {
-      console.log(response.data);
-      navigater();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    console.log(cardDetails);
+
+    axios
+      .put("http://localhost:5000/cards/updateCard", cardDetails)
+      .then((response) => {
+        console.log(response.data);
+        navigater();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 }
 export default PaymentUpdate;
