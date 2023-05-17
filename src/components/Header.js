@@ -1,63 +1,86 @@
-import React from "react";
-import styles from "./Header.module.scss";
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import "./navbarStyle.css";
+import { logoutUser } from "../services/userauthService";
+import { SET_LOGIN } from "../redux/features/auth/userauthslice";
+import { useDispatch, useSelector } from "react-redux";
 
-import cart from '../assets/images/icons/cart.svg';
-import { useLocation } from "react-router-dom";
+import { AiOutlineUser } from "react-icons/ai";
+import { FaUserCircle, FaUserEdit } from "react-icons/fa";
+import { AiOutlineLogin, AiOutlineLogout } from "react-icons/ai";
+function Navbar() {
+  const [showMenu, setShowMenu] = useState(false);
 
-const Header = () => {
+  const handleToggleMenu = () => setShowMenu(!showMenu);
 
-  const location = useLocation();
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
+  const logout = async () => {
+    await logoutUser();
+    await dispatch(SET_LOGIN(false));
+    history.push("/login");
+  };
   return (
-    <div className={styles.contents}>
-
-
-    <div className={styles.component4}>
-      <img
-        alt=""
-        className={styles.pngLogoImage1}
-        src="https://static.overlay-tech.com/assets/4031afd2-2ebd-45c9-b138-9defb3733289.png"
-      />
-      <form action="/">  
-              <div className={styles.searchBox}>
-
-                <input type="text" placeholder="Search here" name="search" className={styles.SearchFeild}/>
-                  <button type="submit" className={styles.searchBtn}>
-                  <img
-                    alt=""
-                    className={styles.icons8Search241}
-                    src="https://static.overlay-tech.com/assets/ba6fb668-1946-4a20-956a-dab4292f68d5.png"/>   
-                  </button>
-              </div>    
-            </form>
-      <div className={styles.loginCont}>
-        
-      <div className={styles.contWrapper}>
-            <button className={styles.rectangle14} >
-            <p className={styles.logOut}>Log Out</p>
-            </button>
-            <div className={styles.mdiaccount}>
-              <img
-                alt=""
-                className={styles.vector}
-                src="https://static.overlay-tech.com/assets/46055384-7399-4d3e-9f2e-a258251c25dc.svg"
-              />
+    <div
+      className="navbars"
+      style={{ position: "fixed", top: 0, left: 0, right: 0 }}
+    >
+      <div className="logos">
+        <img src={require("../views/auth/Logo.png")} alt="Home logo" />
+      </div>
+      <div className="page-logos">
+        <div className="nav-dropdowns">
+          <button onClick={handleToggleMenu}>
+            <div className="icons">
+              <AiOutlineUser size={50} color="#333" />
             </div>
-            { 
-              location.pathname !== '/CheckOut' && 
-              <div className={styles.mdiaccount}>
-                <img
-                  alt=""
-                  className={styles.vector}
-                  src={cart}
-                />
-              </div>
-            } 
-        </div>   
+          </button>
+          {showMenu && (
+            <div className="dropdown-menus">
+              {isLoggedIn && (
+                <>
+                  <Link to="/userProfile" className="button-links">
+                    <div className="icon2">
+                      <FaUserCircle />
+                      <span style={{ marginLeft: "8px" }}>Profile</span>
+                    </div>
+                  </Link>
+                  <Link to="/EditProfile" className="button-links">
+                    <div className="icon2">
+                      <FaUserEdit />
+                      <span style={{ marginLeft: "8px" }}>Update </span>
+                    </div>
+                  </Link>
+
+                  <hr />
+                </>
+              )}
+
+              <button onClick={logout} className="button-links">
+                {isLoggedIn ? (
+                  <>
+                    <AiOutlineLogout
+                      style={{ verticalAlign: "middle", marginRight: "4px" }}
+                    />
+                    Logout
+                  </>
+                ) : (
+                  <>
+                    <AiOutlineLogin
+                      style={{ verticalAlign: "middle", marginRight: "4px" }}
+                    />
+                    Login
+                  </>
+                )}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
-    </div>
   );
-};
+}
 
-export default Header;
+export default Navbar;

@@ -91,14 +91,13 @@ const Checkout = (prop) => {
       <div className={styles.contentWrapper} style={{width:"100%"}}>
       <div className={styles.leftSide}>    
 
-          <div className={styles.checkBarCont} style={{display : "flex" , flexDirection : "column"}}>
+          <div className={styles.checkBarCont} style={{display : "flex" , flexDirection : "column", marginTop: "70px"}}>
             
             {itemList && itemList.map((item,index)=>{
                        console.log(selectedList.includes(index))   
-              return <CheckoutTile key={item._id} cartItem={item} refresher={setItemList} 
+              return <CheckoutTile key={item._id} cartItem={item} refresher={setItemList} loadCheckOutItems={loadCheckOutItems}
                 index={index}
                 calculateSubTotal={calculateSubTotal}
-                loadCheckOutItems={loadCheckOutItems}
                 selectSetter={setSelectedList} setSubTotal={setSubtotal} selected={selectedList.includes(index)} selectedList={selectedList}/>
             })           
             } 

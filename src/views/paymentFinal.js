@@ -21,7 +21,7 @@ const PaymentFinal = (props) => {
           color={"#7CFC00"}
         /> */}
         <QRCode
-          style={{width: "250px", height: "250px", marginBottom: "30px"}}
+          style={{width: "250px", height: "250px", marginBottom: "30px", marginTop: "100px"}}
           value={sessionStorage.getItem("payment")}
         />
         <span

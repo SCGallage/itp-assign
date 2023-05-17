@@ -10,7 +10,7 @@ const TopSection = () =>  {
   return (
 
                       
-     <nav className="navbar nav_t" style={{top:"100px"}}>
+     <nav className="navbar nav_t" style={{top:"80px"}}>
                               
       <div className="container">
         <div className="navbar-header page-scroll">

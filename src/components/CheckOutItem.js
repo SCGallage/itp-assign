@@ -46,7 +46,8 @@ export default function CheckoutTile(props){
                 productId : productId               
           }
           axios.delete("http://localhost:5000/cart",{data : row}).then((response)=>{
-            refresher([])
+            selectSetter(selectedList.filter(itemIndex => index !== itemIndex));
+            props.loadCheckOutItems()
           })
         }}
             alt=""

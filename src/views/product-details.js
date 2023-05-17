@@ -3,26 +3,26 @@ import  { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import {useHistory} from 'react-router-dom';
 import { FaStar } from 'react-icons/fa';
-import './item-discription.css'
+import './product-details.css'
 import './global.css'
 //import './bootstrap.min.js'
-//import './font-awesome.min.css'
+import './font-awesome.min.css'
 //import './bootstrap.min.css'
-import TopSection from './navigation';
-import Navbar from './navigationbar/navbar';
+import TopSection from './navbar';
+import Navbar from './header';
 import Component8 from './footer';
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 
 
-function ItemDiscription(){
+function ProductDetails(){
 
-    const history = useHistory();
+    
     const location = useLocation();
     const productToView = location.state.productToView;
     const [imagePreview] = useState(null);
     //const [inStock, setInStock] = useState(false);
+    
 
     useEffect(() => {
         // Fetch item details including the image from the backend
@@ -65,17 +65,6 @@ function ItemDiscription(){
           setQuantity(pquantity - 1);
         }
       }
-
-      const addItemToCart = async () => {
-        await axios.post(`http://localhost:5000/cart`, {
-          productId: productToView._id,
-          qty: pquantity
-        }).then(data => {
-          toast.success('Item Added To Cart!')
-          history.push('/item-page')
-        });
-    }
-
     return (
 
       <div >
@@ -151,7 +140,7 @@ function ItemDiscription(){
   {inStock ? 'In Stock' : 'Out of Stock'}
 </span>
     
-    <h4 onClick={() => console.log("CLicked!")}>Quantity:</h4>
+    <h4>Quantity:</h4>
     <div className="input-group number-spinner">
       <span className="input-group-btn">
         <button onClick={decreaseQuantity}  className="btn btn-default" data-dir="dwn">
@@ -159,7 +148,7 @@ function ItemDiscription(){
         </button>
       </span>
       <input
-        value={pquantity} onChange={handleQuantityChange}
+        type="number" value={pquantity} onChange={handleQuantityChange}
         className="form-control text-center"
         style={{color:"black"}}
       />
@@ -169,7 +158,7 @@ function ItemDiscription(){
         </button>
       </span>
     </div>
-    <div className="pd_n1 clearfix" onClick={() => addItemToCart()} >
+    <div className="pd_n1 clearfix">
       <h4><a className="button" style={{backgroundColor:"#321375",fontFamily: "Inter",fontWeight: "bold"}}>ADD TO CART</a></h4>
      
     </div>
@@ -189,4 +178,4 @@ function ItemDiscription(){
     </div>
     )
 }
-export default ItemDiscription
+export default ProductDetails
