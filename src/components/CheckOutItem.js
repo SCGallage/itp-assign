@@ -7,7 +7,7 @@ export default function CheckoutTile(props){
     const totalAdd = props.totalAdd
     const cartItem = props.cartItem
     const {userId, productId , qty} = cartItem
-    const {name,price, image} = cartItem.item[0]
+    const {name,price, image, quantity} = cartItem.item[0]
     //console.log(cartItem.item);
     
     const updateRef = useRef(null)
@@ -64,7 +64,7 @@ export default function CheckoutTile(props){
 
           
 
-        {<input type="number"id="num1" min="1" max="20" ref={updateRef} defaultValue={qty} className={styles.count} onChange={(e)=>{
+        {<input type="number"id="num1" min="1" max={quantity} ref={updateRef} defaultValue={qty} className={styles.count} onChange={(e)=>{
             //console.log(e.target.value)
             const data = {
               productId : cartItem.item[0]._id,
@@ -73,6 +73,7 @@ export default function CheckoutTile(props){
             console.log(data)
             axios.post("http://localhost:5000/cart/",data).then((response)=>{
               //refresher([])
+              props.loadCheckOutItems();
             }).catch((err)=>{
               
             })

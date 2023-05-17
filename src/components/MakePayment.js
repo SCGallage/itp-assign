@@ -6,7 +6,7 @@ import axios from "axios";
 const MakePayment = () => {
   const location = useLocation()
   console.log(location);
-  const {subTotal, shipping , bonus} =  location.query
+  const {subTotal, shipping , bonus} =  location.state[0]
   const[addressList , setAddressList] = useState([])  
   const[cardList,setCardList] = useState([])
   const[bankList,setBankList] = useState([])
