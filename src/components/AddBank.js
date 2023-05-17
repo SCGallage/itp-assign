@@ -109,40 +109,32 @@ function submitForm(e) {
   const mobileNoRegex = /^[0][0-9]{9}$/;
   const numericRegex = /^\d+$/;
   let isValidated = true;
-  if (bankName.value === '') {
+  if (bankName.value.trim() === '') {
     toast.error("Enter bank name");
     isValidated = false;
   }
-  if (accountNumber.value === '') {
+  if (accountNumber.value.trim() === '') {
     toast.error("Enter account number");
     isValidated = false;
   }else if(!numericRegex.test(accountNumber.value)){
     toast.error("Invalid card number");
     isValidated = false;
   }
-  if (phone.value === '') {
+  if (phone.value.trim() === '') {
     toast.error("Enter phone number");
     isValidated = false;
   }else if(!mobileNoRegex.test(phone.value)){
     toast.error("Invalid phone number");
     isValidated = false;
   }
-  if (ownerName.value === '') {
+  if (ownerName.value.trim() === '') {
     toast.error("Enter owner name");
     isValidated = false;
   }
 
   if(isValidated){
     let bankDetails = {};
-    if (
-      bankName.value === "" ||
-      accountNumber.value === "" ||
-      phone.value === "" ||
-      ownerName.value === ""
-    ) {
-      alert("All fields are required");
-      return;
-    }
+    
     try {
       bankDetails = {
         bankName: bankName.value,

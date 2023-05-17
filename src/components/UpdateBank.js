@@ -122,25 +122,25 @@ function handleUpdate(navigater, event) {
   const mobileNoRegex = /^[0][0-9]{9}$/;
   const numericRegex = /^\d+$/;
   let isValidated = true;
-  if (bankName.value === '') {
+  if (bankName.value.trim() === '') {
     toast.error("Enter bank name");
     isValidated = false;
   }
-  if (accountNumber.value === '') {
+  if (accountNumber.value.trim() === '') {
     toast.error("Enter account number");
     isValidated = false;
   }else if(!numericRegex.test(accountNumber.value)){
     toast.error("Invalid card number");
     isValidated = false;
   }
-  if (phoneNumber.value === '') {
+  if (phoneNumber.value.trim() === '') {
     toast.error("Enter phone number");
     isValidated = false;
   }else if(!mobileNoRegex.test(phoneNumber.value)){
     toast.error("Invalid phone number");
     isValidated = false;
   }
-  if (ownerName.value === '') {
+  if (ownerName.value.trim() === '') {
     toast.error("Enter owner name");
     isValidated = false;
   }

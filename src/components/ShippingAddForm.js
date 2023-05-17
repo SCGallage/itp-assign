@@ -70,20 +70,21 @@ function ShippingAddForm(props){
 function handleSubmit(event,navigater){
     event.preventDefault()
     const {address, phone, name} = event.target
+
     const mobileNoRegex = /^[0][0-9]{9}$/;
     let isValidated = true;
-    if (name.value === '') {
+    if (name.value.trim() === '') {
       toast.error("Enter name");
       isValidated = false;
     }
-    if (phone.value === '') {
+    if (phone.value.trim() === '') {
       toast.error("Enter phone number");
       isValidated = false;
     }else if(!mobileNoRegex.test(phone.value)){
       toast.error("Invalid phone number");
       isValidated = false;
     }
-    if (address.value === '') {
+    if (address.value.trim() === '') {
       toast.error("Enter address");
       isValidated = false;
     }

@@ -15,7 +15,7 @@ const AddCard = () => {
     const cvvRegex = /^[0-9]{3,4}$/;
     const numericRegex = /^\d+$/;
     let isValidated = true;
-    if (cardNumber.value === '') {
+    if (cardNumber.value.trim() === '') {
       toast.error("Enter card number");
       isValidated = false;
     }else if(!numericRegex.test(cardNumber.value)){
@@ -26,11 +26,11 @@ const AddCard = () => {
       toast.error("Pick expiry date");
       isValidated = false;
     }
-    if (ownerName.value === '') {
+    if (ownerName.value.trim() === '') {
       toast.error("Enter owner name");
       isValidated = false;
     }
-    if (cvv.value === '') {
+    if (cvv.value.trim() === '') {
       toast.error("Enter CVV number");
       isValidated = false;
     }else if(!cvvRegex.test(cvv.value)){
