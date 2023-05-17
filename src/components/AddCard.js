@@ -8,44 +8,56 @@ const AddCard = () => {
   const history = useHistory();
   const loadSuccess = () => history.push("/Payment");
 
-
   function handleSubmit(event) {
     event.preventDefault();
     const { cardNumber, cardType, expiryDate, ownerName, cvv } = event.target;
-
-    if (
-      cardNumber.value === "" ||
-      cardType.value === "" ||
-      expiryDate.value === "" ||
-      ownerName.value === "" ||
-      cvv.value === ""
-    ) {
-      alert("All fields are required");
-
-      return;
+  
+    const cvvRegex = /^[0-9]{3,4}$/;
+    let isValidated = true;
+    if (cardNumber.value === '') {
+      toast.error("Enter card number");
+      isValidated = false;
     }
-
-    let cardDetails = {};
-
-    cardDetails = {
-      cardNumber: cardNumber.value,
-      cardType: cardType.value,
-      expiryDate: expiryDate.value,
-      ownerName: ownerName.value,
-      cvv: cvv.value,
-    };
-
-    console.log(cardDetails);
-
-    axios
-      .post("http://localhost:5000/cards/addCard", cardDetails)
-      .then((response) => {
-        console.log(response.data);
-        history.push("/Payment");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (expiryDate.value === '') {
+      toast.error("Pick expiry date");
+      isValidated = false;
+    }
+    if (ownerName.value === '') {
+      toast.error("Enter owner name");
+      isValidated = false;
+    }
+    if (cvv.value === '') {
+      toast.error("Enter CVV number");
+      isValidated = false;
+    }else if(!cvvRegex.test(cvv.value)){
+      toast.error("Invalid CVV");
+      isValidated = false;
+    }
+  
+    
+    if (isValidated) {
+      let cardDetails = {};
+  
+      cardDetails = {
+        cardNumber: cardNumber.value,
+        cardType: cardType.value,
+        expiryDate: expiryDate.value,
+        ownerName: ownerName.value,
+        cvv: cvv.value,
+      };
+    
+      console.log(cardDetails);
+    
+      axios
+        .post("http://localhost:5000/cards/addCard", cardDetails)
+        .then((response) => {
+          console.log(response.data);
+          history.push("/Payment");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   return (
@@ -138,57 +150,5 @@ const AddCard = () => {
     </form>
   );
 };
-
-function handleSubmit(event, history) {
-  event.preventDefault();
-  const { cardNumber, cardType, expiryDate, ownerName, cvv } = event.target;
-
-  const cvvRegex = /^[0-9]{3,4}$/;
-  let isValidated = true;
-  if (cardNumber.value === '') {
-    toast.error("Enter card number");
-    isValidated = false;
-  }
-  if (expiryDate.value === '') {
-    toast.error("Pick expiry date");
-    isValidated = false;
-  }
-  if (ownerName.value === '') {
-    toast.error("Enter owner name");
-    isValidated = false;
-  }
-  if (cvv.value === '') {
-    toast.error("Enter CVV number");
-    isValidated = false;
-  }else if(!cvvRegex.test(cvv.value)){
-    toast.error("Invalid CVV");
-    isValidated = false;
-  }
-
-  
-  if (isValidated) {
-    let cardDetails = {};
-
-    cardDetails = {
-      cardNumber: cardNumber.value,
-      cardType: cardType.value,
-      expiryDate: expiryDate.value,
-      ownerName: ownerName.value,
-      cvv: cvv.value,
-    };
-  
-    console.log(cardDetails);
-  
-    axios
-      .post("http://localhost:5000/cards/addCard", cardDetails)
-      .then((response) => {
-        console.log(response.data);
-        history.push("/Payment");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-}
 
 export default AddCard;
