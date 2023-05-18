@@ -1,4 +1,4 @@
-.navbar {
+.navbars {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,13 +22,13 @@
   background: #ffffff;
   box-shadow: 0 0 20px rgb(0 0 0 / 8%); */
 
-.navbar a {
+.navbars a {
   display: inline-block;
   color: #fff;
   padding: 10px;
 }
 
-.nav-dropdown button {
+.nav-dropdowns button {
   background: none;
   border: none;
   color: #070707;
@@ -37,47 +37,64 @@
   margin-right: 10px;
 }
 
-.dropdown-menu {
+.button-links{
+  margin-right: 120px;
+}
+.user-photo{
+
+  margin-right: 20px;
+}
+.dropdown-menus {
   position: absolute;
-  
-  padding-right: 100px;
-  z-index: 1;
+  top: 100%;
+  left: 1400px;
+ 
+  /* z-index: 1; */
   display: flex;
   flex-direction: column;
-  min-width: 100px;
-  padding: 10px;
- 
+  min-width: 60px;
+
   background-color: #fff;
   border: 1px solid #ccc;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
 }
+.user-photo {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+}
 
 
-.dropdown-menu a {
+.nav-dropdowns.left-align {
+  left: 0; /* Align to the left when user photo exists */
+}
+
+.dropdown-menus a {
   color: #333;
   padding: 10px;
 }
 
-.dropdown-menu hr {
+.dropdown-menus hr {
   margin: 0;
 }
 
-.logo {
+.logos {
   display: flex;
   align-items: center;
 }
 
-.logo img {
+.logos img {
   height: 90px;
    width: 90px;
   margin-right: 10px;
 }
 
-.page-logo img {
+.page-logos img {
   height: 50px;
 }
 
-.button-link {
+.button-links {
   background-color: #fcfcfc;
   color: #000000;
   border: none;
@@ -88,11 +105,11 @@
   text-decoration: none;
 }
 
-.button-link:hover {
+.button-links:hover {
   background-color: #af1f1f;
 }
 
-.icon {
+.icons {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -109,7 +126,7 @@
   align-items: center;
 }
 
-.button-link {
+.button-links {
   display: flex;
   align-items: center;
 }
