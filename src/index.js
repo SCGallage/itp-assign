@@ -88,6 +88,8 @@ import CheckOut from "./views/CheckOut";
 import CreaditCardAdd from "./views/CreaditCardAdd";
 import MakePayment from "./views/MakePayments";
 import PaymentFinal from "./views/paymentFinal";
+import Shop from './views/shop'
+import HomePage from './views/Homepage/home-page'
 
 axios.defaults.withCredentials = true
 
@@ -124,13 +126,14 @@ const App = () => {
             <Route component={Outofstockitems} exact path="/outofstockitems" />
             <Route component={SalesmanagerDashboard} exact path="/salesmanager-dashboard"/>
             <Route component={SerchProducts} exact path="/serchProducts" />
-            <Route component={ItemPage} exact path="/item-page" />
+            <Route component={Shop} exact path="/item-page" />
             <Route component={ItemDiscription} exact path="/item-discription/:id" />
             <Route component={UpdateItem} exact path="/update-item/:id" />
             <Route component={ViewItem} exact path="/view-item/:id" />
           </div>
           <Provider store={customer}>
             <Route component={Home} exact path="/Home" />
+            <Route component={HomePage} exact path="/Home-page" />
             <Route component={Customer} exact path="/view-customers" />
             <Route component={Login} exact path="/login" />
             <Route component={Register} exact path="/Register" />
