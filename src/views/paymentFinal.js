@@ -8,6 +8,9 @@ import { CheckmarkCircleOutline } from "react-ionicons";
 import QRCode from "react-qr-code";
  const bg = require('../assets/images/blurredBackground9.png')
 const PaymentFinal = (props) => {
+
+  const history = useHistory();
+
   return (
     <div style={{backgroundImage: `url(${bg})`,
     backgroundRepeat: 'no-repeat',
@@ -45,6 +48,7 @@ const PaymentFinal = (props) => {
                 <p
                   style={{ color: "#fff", margin: "auto" }}
                   className={styles.payt}
+                  onClick={() => history.push("/item-page")}
                 >
                   Shop more
                 </p>
@@ -57,6 +61,7 @@ const PaymentFinal = (props) => {
                 <p
                   style={{ color: "#fff", margin: "auto" }}
                   className={styles.payt}
+                  onClick={() => history.push('/Home-page')}
                 >
                   Home
                 </p>
