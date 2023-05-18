@@ -17,7 +17,7 @@ const ShippingAddress = () => {
     })
   }
   return (
-    <div className={styles.component9} style={{display:"flex",alignItems:"center"}}>
+    <div className={styles.component9} style={{display:"flex",alignItems:"center", marginTop: "120px"}}>
       <p className={styles.accountPaymentOptions}>
         Account &gt; Shipping Addresses{" "}
       </p>

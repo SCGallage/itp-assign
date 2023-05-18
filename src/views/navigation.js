@@ -1,18 +1,18 @@
 import React from 'react';
 
-import './shop.css'
+import './item-page.css'
 import './global.css'
 //import './bootstrap.min.js'
-import './font-awesome.min.css'
+//import './font-awesome.min.css'
 import './bootstrap.min.css'
 
 const TopSection = () =>  {
   return (
 
                       
-     <nav className="navbar nav_t" style={{top:"80px"}}>
+     <nav className="navbar nav_t" style={{top:"80px",width:"1000px"}}>
                               
-      <div className="container">
+      <div className="container" style={{justifyContent:"center"}}>
         <div className="navbar-header page-scroll">
           <button
             type="button"
@@ -54,11 +54,7 @@ const TopSection = () =>  {
                Rent a Vehicle
               </a>
             </li>
-            <li>
-              <a className="m_tag active_tab" href="about.html">
-                Supplier Items
-              </a>
-            </li>
+           
             <li>
               <a className="m_tag" href="services.html">
                 About Us
