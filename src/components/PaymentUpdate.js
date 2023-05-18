@@ -32,6 +32,7 @@ const PaymentUpdate = () => {
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-evenly",
+              gap: "40px"
             }}
           >
             <div class={styles.titleContainer}>
