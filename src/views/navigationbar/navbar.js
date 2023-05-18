@@ -6,7 +6,7 @@ import { SET_LOGIN } from "../../redux/features/auth/userauthslice";
 import { useDispatch, useSelector } from "react-redux";
 
 import { AiOutlineUser } from "react-icons/ai";
-import { FaUserCircle, FaUserEdit } from "react-icons/fa";
+import { FaCartPlus, FaUserCircle, FaUserEdit } from "react-icons/fa";
 import { AiOutlineLogin, AiOutlineLogout } from "react-icons/ai";
 import {
   selectIsLoggedIn,
@@ -37,7 +37,7 @@ function Navbar() {
         <img src={require("../auth/Logo.png")} alt="Home logo" />
       </div>
       <div className="page-logos">
-        <div className="nav-dropdowns">
+        <div style={{display: 'flex'}} className="nav-dropdowns">
           <button onClick={handleToggleMenu}>
             {isLoggedIn && user.photo ? (
               <img src={user.photo} alt="User Photo" className="user-photo" />
@@ -87,7 +87,11 @@ function Navbar() {
               </button>
             </div>
           )}
+          <div className="icons" onClick={() => history.push("/CheckOut")}>
+              <FaCartPlus size={50} color="#333" />
+          </div>
         </div>
+        
       </div>
     </div>
   );
